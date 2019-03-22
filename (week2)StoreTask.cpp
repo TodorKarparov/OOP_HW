@@ -32,19 +32,23 @@ private:
   bool food;
   double price;
 
-friend class Store;
+//friend class Store;
 //==============================================================================
 
 public:
 
-  Product(){
-    name = new char[100];
+  Product(const char* str){
+    int i;
+    for(i = 0;str[i] != 0;i++){
+    }
+
+    this->name = new char[i];
   }
 
 //mutators
-  void set_name(){
-    cin.getline(this->name, 100);cin.ignore();
-  }
+  // void set_name(){
+  //   cin.getline(this->name, 100);cin.ignore();
+  // }
 
   void set_expirationDays(size_t x){
     this->expirationDays = x;
@@ -84,7 +88,20 @@ public:
   }
 
 //==============================================================================
+  void printStats(){
+    for(int i = 0; name[i] != 0;i++){
+      cout << this->name[i];
+    }
+    cout << endl << "Days until expiration: " << this -> expirationDays << endl;
+    cout <<"Fat percentage: " << fatPercent <<endl;
+    if(this->food){
+      cout <<"This product is for consumption." << endl;
+    } else {
+      cout << "This product is not for consumption." << endl;
+    }
+    cout << "Price: " << this->price;
 
+  }
   ~Product(){
     delete []name;
   }
@@ -118,7 +135,7 @@ public:
 Product* search(char* searchWord){
 
   for(size_t i = 0; i < numbeOfProducts; i++){
-    if(compare(this->products[i]->name, searchWord)){
+    if(compare(this->products[i]->get_name(), searchWord)){
       return this->products[i];
     }
   }
@@ -131,8 +148,8 @@ Product* leastFat(){
   Product* currentBest = NULL;
   short currentMin = 100;
   for(size_t i = 0;i < numbeOfProducts;i++){
-    if(this->products[i]->fatPercent < currentMin){
-      currentMin = this->products[i]->fatPercent;
+    if(this->products[i]->get_fatPercent() < currentMin){
+      currentMin = this->products[i]->get_fatPercent();
       currentBest = this->products[i];
     }
   }
@@ -160,8 +177,8 @@ void sell(size_t productIndex){
 double losses(){
   double currentLoss = 0;
   for(size_t i = 0;i < numbeOfProducts;i++){
-    if(this->products[i]->expirationDays < 6){
-      currentLoss += this->products[i]->price;
+    if(this->products[i]->get_expirationDays() < 6){
+      currentLoss += this->products[i]->get_price();
     }
   }
 
@@ -182,9 +199,10 @@ double losses(){
 
 
 int main(){
+  char name[10] = {"Creatine"};
+  Product a1(name);
 
-
-
+  a1.printStats();
   return 0;
 }
 
